@@ -58,10 +58,10 @@ const LoginScreen = () => {
 
       {/* Log In Button */}
       <TouchableOpacity style={styles.button}>
-      <TouchableOpacity onPress={() => router.push('/HomeScreen')}>
+        <TouchableOpacity onPress={() => router.push('/homescreen')}>
 
-        <Text style={styles.buttonText}>Log In</Text>
-      </TouchableOpacity>
+          <Text style={styles.buttonText}>Log In</Text>
+        </TouchableOpacity>
       </TouchableOpacity>
     </View>
   );
