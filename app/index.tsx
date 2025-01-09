@@ -22,7 +22,7 @@ const LoginScreen = () => {
       const user = await client.fetch(query, params);
 
       if (user) {
-        router.push({ pathname: '/homescreen', params: { userId: user._id } });
+        router.push({ pathname: '/HomeScreen', params: { userId: user._id } });
       } else {
         Alert.alert('Error', 'Invalid email or password.');
       }
@@ -57,11 +57,8 @@ const LoginScreen = () => {
       </TouchableOpacity>
 
       {/* Log In Button */}
-      <TouchableOpacity style={styles.button}>
-        <TouchableOpacity onPress={() => router.push('/homescreen')}>
-
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/HomeScreen')}>
           <Text style={styles.buttonText}>Log In</Text>
-        </TouchableOpacity>
       </TouchableOpacity>
     </View>
   );

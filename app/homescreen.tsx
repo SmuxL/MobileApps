@@ -1,3 +1,4 @@
+import { Link, useNavigation, useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 
@@ -7,19 +8,23 @@ type Workout = {
   name: string;
   description: string;
   moves: number;
+  image: any; // Image source
 };
 
 const HomeScreen = () => {
-  // Workout-array
+  // Workout-array met afbeeldingen
   const workouts: Workout[] = [
-    { id: '1', name: 'Bench Press', description: 'Day 2, 20 min', moves: 20 },
-    { id: '2', name: 'Pull Ups', description: 'Day 3, 20 min', moves: 14 },
-    { id: '3', name: 'Bicep Curls', description: 'Day 4, 20 min', moves: 14 },
+    { id: '1', name: 'Bench Press', description: 'Day 2, 20 min', moves: 20, image: require('../assets/bench_press.jpg') },
+    { id: '2', name: 'Pull Ups', description: 'Day 3, 20 min', moves: 14, image: require('../assets/pull_ups.jpg') },
+    { id: '3', name: 'Bicep Curls', description: 'Day 4, 20 min', moves: 14, image: require('../assets/bicep_curls.jpg') },
   ];
+
+  const router = useRouter();
 
   // Renderfunctie voor workouts
   const renderWorkout = ({ item }: { item: Workout }) => (
     <View style={styles.workoutItem}>
+      <Image source={item.image} style={styles.workoutThumbnail} />
       <View style={styles.workoutDetails}>
         <Text style={styles.workoutTitle}>{item.name}</Text>
         <Text style={styles.workoutDescription}>{item.description}</Text>
@@ -34,7 +39,7 @@ const HomeScreen = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={{ uri: 'https://via.placeholder.com/50' }}
+          source={require('../assets/gympic.jpg')}
           style={styles.profileImage}
         />
         <View>
@@ -49,7 +54,7 @@ const HomeScreen = () => {
       <Text style={styles.sectionTitle}>Today's Workout</Text>
 
       <Image
-        source={{ uri: 'https://via.placeholder.com/300x150' }}
+        source={require('../assets/squat.jpg')}
         style={styles.workoutImage}
       />
       <Text style={styles.workoutMainTitle}>Power Workout</Text>
@@ -67,7 +72,7 @@ const HomeScreen = () => {
         <TouchableOpacity style={styles.menuButton}>
           <Text style={styles.menuText}>+</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButton}>
+        <TouchableOpacity style={styles.menuButton} onPress={() => router.push('/Profile')}>
           <Text style={styles.menuText}>Profile</Text>
         </TouchableOpacity>
       </View>
@@ -124,11 +129,18 @@ const styles = StyleSheet.create({
   },
   workoutItem: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     padding: 15,
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
     marginBottom: 10,
+  },
+  workoutThumbnail: {
+    width: 60,
+    height: 60,
+    borderRadius: 10,
+    marginRight: 10,
   },
   workoutDetails: {
     flex: 1,
