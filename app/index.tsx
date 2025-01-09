@@ -34,7 +34,7 @@ const LoginScreen = () => {
 
   return (
     <ImageBackground
-      source={require('../assets/background.jpg')} 
+      source={require('../assets/background.jpg')}
       style={styles.backgroundImage}
     >
       <View style={styles.overlay}>
@@ -70,10 +70,10 @@ const LoginScreen = () => {
           <Text style={styles.signUpText}>Don't have an account? Sign up</Text>
         </TouchableOpacity>
 
-         {/* Log In Button */}
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/HomeScreen')}>
+        {/* Log In Button */}
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/HomeScreen')}>
           <Text style={styles.buttonText}>Log In</Text>
-      </TouchableOpacity>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
