@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, } from 'react-native';
-import { Link, useNavigation, useRouter } from 'expo-router';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, ImageBackground } from 'react-native';
+import { useNavigation, useRouter } from 'expo-router';
 import client from '~/sanity/sanity';
 
 const LoginScreen = () => {
@@ -33,44 +33,63 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Logo */}
-      <View style={styles.logoContainer}>
-        <Image source={require('../assets/logo.png')} style={styles.logo} />
-        <Text style={styles.subtitle}>Your Path to Peak Performance</Text>
-      </View>
+    <ImageBackground
+      source={require('../assets/background.jpg')} 
+      style={styles.backgroundImage}
+    >
+      <View style={styles.overlay}>
+        {/* Logo */}
+        <View style={styles.logoContainer}>
+          <Image source={require('../assets/logo.png')} style={styles.logo} />
+          <Text style={styles.subtitle}>Your Path to Peak Performance</Text>
+        </View>
 
-      {/* Input fields */}
-      <View style={styles.formContainer}>
-        <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" />
-        <TextInput style={styles.input} placeholder="Password" secureTextEntry={true} />
-      </View>
+        {/* Input fields */}
+        <View style={styles.formContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            keyboardType="email-address"
+            placeholderTextColor="#fff"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry={true}
+            placeholderTextColor="#fff"
+          />
+        </View>
 
-      {/* Forgot Password */}
-      <TouchableOpacity>
-        <Text style={styles.forgotText}>Forgot Password?</Text>
-      </TouchableOpacity>
+        {/* Forgot Password */}
+        <TouchableOpacity>
+          <Text style={styles.forgotText}>Forgot Password?</Text>
+        </TouchableOpacity>
 
-      {/* Sign Up Link */}
-      <TouchableOpacity onPress={() => router.push('/SignUp')}>
-        <Text style={styles.signUpText}>Don't have an account? Sign up</Text>
-      </TouchableOpacity>
+        {/* Sign Up Link */}
+        <TouchableOpacity onPress={() => router.push('/SignUp')}>
+          <Text style={styles.signUpText}>Don't have an account? Sign up</Text>
+        </TouchableOpacity>
 
-      {/* Log In Button */}
+         {/* Log In Button */}
       <TouchableOpacity style={styles.button} onPress={() => router.push('/HomeScreen')}>
           <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
-    </View>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  overlay: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Donkere overlay
     padding: 20,
-    backgroundColor: '#fff',
   },
   logoContainer: {
     alignItems: 'center',
@@ -82,9 +101,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   subtitle: {
-    fontSize: 16,
-    color: '#999',
+    fontSize: 18,
+    color: '#fff',
     marginTop: 10,
+    textAlign: 'center',
   },
   formContainer: {
     width: '100%',
@@ -92,20 +112,22 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    borderColor: '#ccc',
+    borderColor: '#fff',
     borderWidth: 1,
     borderRadius: 10,
     marginBottom: 10,
     paddingLeft: 15,
     fontSize: 16,
+    color: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparante achtergrond
   },
   forgotText: {
-    color: '#007BFF',
+    color: '#FFD700',
     textAlign: 'center',
     marginBottom: 10,
   },
   signUpText: {
-    color: '#007BFF',
+    color: '#FFD700',
     textAlign: 'center',
     marginBottom: 30,
   },
@@ -115,6 +137,11 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     width: '100%',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 3,
   },
   buttonText: {
     color: '#fff',
