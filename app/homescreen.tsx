@@ -84,13 +84,14 @@ const HomeScreen = () => {
         ))}
       </View>
 
-      <Text style={styles.sectionTitle}>Today's Workout</Text>
+      <View style={styles.imageContainer}>
+        <Image
+          source={require('../assets/squat.jpg')}
+          style={styles.workoutImage}
+        />
+        <Text style={styles.overlayText}>Today's workout</Text>
+      </View>
 
-      {/* Main Workout Image */}
-      <Image
-        source={require('../assets/squat.jpg')}
-        style={styles.workoutImage}
-      />
       <Text style={styles.workoutMainTitle}>Power Workout</Text>
 
       {/* Workout List */}
@@ -131,12 +132,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f2f2f2',
+    marginBottom: 0,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 10,
     backgroundColor: '#FF6347',
     padding: 10,
     borderRadius: 10,
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 0,
     padding: 10,
     backgroundColor: '#fff',
     borderRadius: 10,
@@ -206,9 +208,8 @@ const styles = StyleSheet.create({
   },
   workoutImage: {
     width: '100%',
-    height: 200,
+    height: '100%',
     borderRadius: 10,
-    marginBottom: 10,
   },
   workoutMainTitle: {
     fontSize: 18,
@@ -282,6 +283,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FF6347',
   },
+  imageContainer: {
+    position: 'relative',
+    width: '100%',
+    height: 200,
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  overlayText: {
+    position: 'absolute', // Places the text on top of the image
+    bottom: 10, // Adjusts position relative to the bottom of the image
+    left: 10, // Adjusts position relative to the left side
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff', // Ensures text is visible
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional: Adds a semi-transparent background
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 5,
+  }
 });
 
 export default HomeScreen;
