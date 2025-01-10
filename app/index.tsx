@@ -42,6 +42,7 @@ const LoginScreen = () => {
   return (
     <ImageBackground
       source={require('../assets/background.jpg')}
+      source={require('../assets/background.jpg')}
       style={styles.backgroundImage}
     >
       <View style={styles.overlay}>
