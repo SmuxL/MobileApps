@@ -1,7 +1,62 @@
-import React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
+import client from '../sanity/sanity';
+
+type User = {
+  name: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  weight: number;
+  profileImageUrl: string;
+};
 
 const ProfileScreen = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  useEffect(() => {
+    // Fetch user data from Sanity
+    const fetchUserData = async () => {
+      try {
+        const data: User = await client.fetch(
+          `*[_type == "users" && name == "Thomas Van Beneden"][0]{
+        name,
+        email,
+        password,
+        phoneNumber,
+        weight,
+        "profileImageUrl": profileImage.asset->url
+      }`
+        );
+        setUser(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#FF6347" />
+      </View>
+    );
+  }
+
+  if (!user) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>User not found!</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -16,18 +71,58 @@ const ProfileScreen = () => {
         {/* Profile Image */}
         <View style={styles.imageContainer}>
           <Image
-            source={require('../assets/Profile pic.jpg')}
+            source={{ uri: user?.profileImageUrl }}
             style={styles.profileImage}
           />
         </View>
 
         {/* Input Fields */}
         <View style={styles.formContainer}>
-          <TextInput style={styles.input} placeholder="Name" placeholderTextColor="#999" />
-          <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" placeholderTextColor="#999" />
-          <TextInput style={styles.input} placeholder="Phonenumber" keyboardType="phone-pad" placeholderTextColor="#999" />
-          <TextInput style={styles.input} placeholder="Address" placeholderTextColor="#999" />
-          <TextInput style={styles.input} placeholder="Weight" keyboardType="numeric" placeholderTextColor="#999" />
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            placeholderTextColor="#999"
+            value={user.name}
+            editable={false} // Make it non-editable for now
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#999"
+            value={user.email}
+            editable={false} // Make it non-editable for now
+          />
+          <View style={[styles.input, styles.passwordContainer]}>
+            <TextInput
+              style={{ flex: 1 }}
+              placeholder="Password"
+              placeholderTextColor="#999"
+              secureTextEntry={!isPasswordVisible}
+              value={user?.password || ''}
+              editable={false}
+            />
+            <TouchableOpacity
+              onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+              style={styles.eyeIconContainer}
+            >
+              <Text style={styles.eyeIcon}>{isPasswordVisible ? '👁️' : '🙈'}</Text>
+            </TouchableOpacity>
+          </View>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Phone Number"
+            placeholderTextColor="#999"
+            value={user.phoneNumber}
+            editable={false} // Make it non-editable for now
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Weight"
+            placeholderTextColor="#999"
+            value={user.weight?.toString() || ''} // Convert number to string
+            editable={false} // Make it non-editable for now
+          />
         </View>
 
         {/* Save Button */}
@@ -140,6 +235,38 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: '#FF6347',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    fontSize: 18,
+    color: 'red',
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#FF6347',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    height: 50,
+    marginBottom: 10,
+    backgroundColor: '#fff',
+  },
+  eyeIconContainer: {
+    marginLeft: 'auto', // Push the icon to the right
+  },
+  eyeIcon: {
+    fontSize: 18,
+    color: '#999',
   },
 });
 

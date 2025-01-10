@@ -54,10 +54,12 @@ const HomeScreen = () => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Image
-          source={require('../assets/gympic.jpg')}
-          style={styles.profileImage}
-        />
+        <TouchableOpacity onPress={() => router.push('/Profile')}>
+          <Image
+            source={require('../assets/gympic.jpg')}
+            style={styles.profileImage}
+          />
+        </TouchableOpacity>
         <View>
           <Text style={styles.greeting}>Hello Thomas</Text>
           <Text style={styles.location}>Leuven</Text>
