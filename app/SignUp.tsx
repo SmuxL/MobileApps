@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import client from '~/sanity/sanity';
+import users from '~/sanity/schemaTypes/users';
 
 const SignUpScreen = () => {
   const router = useRouter();
@@ -32,14 +33,14 @@ const SignUpScreen = () => {
         return;
       }
 
-      const newUser = {
+      const Users = {
         _type: 'user',
         name,
         email,
         password,
       };
 
-      await client.create(newUser);
+      await client.create(Users);
       Alert.alert('Success', 'Account created successfully! You can now log in.');
       router.push('/'); 
     } catch (error) {
