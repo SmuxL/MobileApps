@@ -54,15 +54,17 @@ const HomeScreen = () => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.push('/Profile')}>
-          <Image
-            source={require('../assets/gympic.jpg')}
-            style={styles.profileImage}
-          />
-        </TouchableOpacity>
-        <View>
-          <Text style={styles.greeting}>Hello Thomas</Text>
-          <Text style={styles.location}>Leuven</Text>
+        <View style={styles.profileDetails}>
+          <TouchableOpacity onPress={() => router.push('/Profile')}>
+            <Image
+              source={require('../assets/gympic.jpg')}
+              style={styles.profileImage}
+            />
+          </TouchableOpacity>
+          <View>
+            <Text style={styles.greeting}>Hello Thomas</Text>
+            <Text style={styles.location}>Leuven</Text>
+          </View>
         </View>
         <TouchableOpacity>
           <Text style={styles.notificationIcon}>🔔</Text>
@@ -74,14 +76,21 @@ const HomeScreen = () => {
         {dates.map((item, index) => (
           <View key={index} style={styles.calendarDay}>
             <Text style={styles.dayText}>{item.day}</Text>
-            <Text
+            <View
               style={[
-                styles.dateText,
-                index === 0 ? styles.currentDateText : null, // Highlight current day
+                styles.dateCircle,
+                index === 0 ? styles.currentDateCircle : styles.defaultDateCircle,
               ]}
             >
-              {item.date}
-            </Text>
+              <Text
+                style={[
+                  styles.dateText,
+                  index === 0 ? styles.currentDateTextColor : styles.defaultDateTextColor,
+                ]}
+              >
+                {item.date}
+              </Text>
+            </View>
           </View>
         ))}
       </View>
@@ -94,7 +103,10 @@ const HomeScreen = () => {
         <Text style={styles.overlayText}>Today's workout</Text>
       </View>
 
-      <Text style={styles.workoutMainTitle}>Power Workout</Text>
+      {/* Power Workout Section */}
+      <View style={styles.powerWorkoutContainer}>
+        <Text style={styles.workoutMainTitle}>Power Workout</Text>
+      </View>
 
       {/* Workout List */}
       <FlatList
@@ -145,6 +157,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
+  profileDetails: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   profileImage: {
     width: 50,
     height: 50,
@@ -165,6 +181,7 @@ const styles = StyleSheet.create({
   notificationIcon: {
     fontSize: 24,
     color: '#fff',
+    marginRight: 5,
   },
   calendarContainer: {
     flexDirection: 'row',
@@ -182,6 +199,7 @@ const styles = StyleSheet.create({
   },
   calendarDay: {
     alignItems: 'center',
+    marginHorizontal: 5,
   },
   dayText: {
     fontSize: 14,
@@ -191,8 +209,13 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  currentDateTextColor: {
+    color: '#000',
+  },
+
+  defaultDateTextColor: {
     color: '#FF6347',
-    marginTop: 5,
   },
   currentDateText: {
     color: '#fff',
@@ -217,8 +240,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 20,
-    color: '#333',
+    color: '#fff',
+  },
+  powerWorkoutContainer: {
+    backgroundColor: '#FF6347',
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginBottom: 10,
+    alignItems: 'center',
   },
   workoutItem: {
     flexDirection: 'row',
@@ -288,22 +317,36 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: 'relative',
     width: '100%',
-    height: 200,
+    height: 150,
     marginBottom: 10,
     marginTop: 10,
   },
   overlayText: {
-    position: 'absolute', // Places the text on top of the image
-    bottom: 10, // Adjusts position relative to the bottom of the image
-    left: 10, // Adjusts position relative to the left side
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#fff', // Ensures text is visible
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional: Adds a semi-transparent background
+    color: '#fff',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 5,
-  }
+  },
+  currentDateCircle: {
+    backgroundColor: '#FF6347',
+  },
+  defaultDateCircle: {
+    backgroundColor: '#e0e0e0',
+  },
+  dateCircle: {
+    width: 36,
+    height: 24,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 2
+  },
 });
 
 export default HomeScreen;
