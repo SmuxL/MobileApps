@@ -1,23 +1,40 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import client from '~/sanity/sanity';
 
 // Typedefinitie voor Workout-items
-type Workout = {
-  id: string;
+type Exercise = {
+  _id: string;
   name: string;
   description: string;
-  moves: number;
-  image: any; // Image source
+  sets: number;
+  reps: number;
+  imageUrl: string;
 };
 
 const HomeScreen = () => {
-  // Workout-array met afbeeldingen
-  const workouts: Workout[] = [
-    { id: '1', name: 'Bench Press', description: 'Day 2, 20 min', moves: 20, image: require('../assets/bench_press.jpg') },
-    { id: '2', name: 'Pull Ups', description: 'Day 3, 20 min', moves: 14, image: require('../assets/pull_ups.jpg') },
-    { id: '3', name: 'Bicep Curls', description: 'Day 4, 20 min', moves: 14, image: require('../assets/bicep_curls.jpg') },
-  ];
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        const data = await client.fetch(`*[_type == "exercises"]{
+          _id,
+          name,
+          description,
+          sets,
+          reps,
+          "imageUrl": image.asset->url
+        }`);
+        setExercises(data);
+      } catch (error) {
+        console.error('Error fetching exercises:', error);
+      }
+    };
+
+    fetchExercises();
+  }, []);
 
   const router = useRouter();
 
@@ -32,20 +49,6 @@ const HomeScreen = () => {
       date: newDate.getDate(),
     };
   });
-
-  // Renderfunctie voor workouts
-  const renderWorkout = ({ item }: { item: Workout }) => (
-    <View style={styles.workoutItem}>
-      <Image source={item.image} style={styles.workoutThumbnail} />
-      <View style={styles.workoutDetails}>
-        <Text style={styles.workoutTitle}>{item.name}</Text>
-        <Text style={styles.workoutDescription}>{item.description}</Text>
-      </View>
-      <View style={styles.workoutMovesContainer}>
-        <Text style={styles.workoutMoves}>{item.moves} moves</Text>
-      </View>
-    </View>
-  );
 
   return (
     <View style={styles.container}>
@@ -92,9 +95,19 @@ const HomeScreen = () => {
 
       {/* Workout List */}
       <FlatList
-        data={workouts}
-        renderItem={renderWorkout}
-        keyExtractor={(item) => item.id}
+        data={exercises}
+        renderItem={({ item }) => (
+          <View style={styles.workoutItem}>
+            <Image source={{ uri: item.imageUrl }} style={styles.workoutThumbnail} />
+            <View style={styles.workoutDetails}>
+              <Text style={styles.workoutTitle}>{item.name}</Text>
+            </View>
+            <View style={styles.workoutMovesContainer}>
+              <Text style={styles.workoutMoves}>Sets: {item.sets} | Reps: {item.reps}</Text>
+            </View>
+          </View>
+        )}
+        keyExtractor={(item) => item._id}
         contentContainerStyle={{ paddingBottom: 80 }} // Extra ruimte onderaan voor footer
       />
 
