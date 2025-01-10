@@ -126,21 +126,29 @@ const HomeScreen = () => {
         contentContainerStyle={{ paddingBottom: 80 }} // Extra ruimte onderaan voor footer
       />
 
-      {/* Footer Menu */}
-      <View style={styles.footerMenu}>
-        <TouchableOpacity style={styles.menuButton}>
-          <Text style={styles.menuText}>Schedule</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButton}>
-          <Text style={styles.menuText}>+</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButton} onPress={() => router.push('/Profile')}>
-          <Text style={styles.menuText}>Profile</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
+     {/* Footer Menu */}
+          <View style={styles.footerMenu}>
+            <TouchableOpacity
+              style={styles.menuButton}
+              onPress={() => router.push('/homescreen')}
+            >
+              <View style={styles.activeIndicator}>
+              <Text style={[styles.menuIcon, { color: '#fff' }]}>🏠</Text>
+              <Text style={[styles.menuText, { color: '#fff' }]}>Home</Text>
+              </View>
+
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.menuButton, styles.activeButton]}
+              onPress={() => router.push('/Profile')}>
+
+                <Text style={styles.menuIcon}>👤</Text>
+                <Text style={styles.menuText}>Profile</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    };
 
 const styles = StyleSheet.create({
   container: {
@@ -306,7 +314,24 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 3,
   },
-  menuButton: {
+   menuButton: {
+    alignItems: 'center',
+    flex: 1,
+    paddingVertical: 5,
+  },
+  menuIcon: {
+    fontSize: 20,
+    marginBottom: 2,
+    color: '#FF6347',
+  },
+  activeButton: {
+    backgroundColor: 'transparent',
+  },
+  activeIndicator: {
+    backgroundColor: '#FF6347',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
     alignItems: 'center',
   },
   menuText: {
