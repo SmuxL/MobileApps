@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import client from '../sanity/sanity';
+import { useRouter } from 'expo-router';
 
 type User = {
   name: string;
@@ -15,9 +25,9 @@ const ProfileScreen = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
-    // Fetch user data from Sanity
     const fetchUserData = async () => {
       try {
         const data: User = await client.fetch(
@@ -83,14 +93,14 @@ const ProfileScreen = () => {
             placeholder="Name"
             placeholderTextColor="#999"
             value={user.name}
-            editable={false} // Make it non-editable for now
+            editable={false}
           />
           <TextInput
             style={styles.input}
             placeholder="Email"
             placeholderTextColor="#999"
             value={user.email}
-            editable={false} // Make it non-editable for now
+            editable={false}
           />
           <View style={[styles.input, styles.passwordContainer]}>
             <TextInput
@@ -105,7 +115,9 @@ const ProfileScreen = () => {
               onPress={() => setIsPasswordVisible(!isPasswordVisible)}
               style={styles.eyeIconContainer}
             >
-              <Text style={styles.eyeIcon}>{isPasswordVisible ? '👁️' : '🙈'}</Text>
+              <Text style={styles.eyeIcon}>
+                {isPasswordVisible ? '👁️' : '🙈'}
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -114,14 +126,14 @@ const ProfileScreen = () => {
             placeholder="Phone Number"
             placeholderTextColor="#999"
             value={user.phoneNumber}
-            editable={false} // Make it non-editable for now
+            editable={false}
           />
           <TextInput
             style={styles.input}
             placeholder="Weight"
             placeholderTextColor="#999"
-            value={user.weight?.toString() || ''} // Convert number to string
-            editable={false} // Make it non-editable for now
+            value={user.weight?.toString() || ''}
+            editable={false}
           />
         </View>
 
@@ -133,14 +145,21 @@ const ProfileScreen = () => {
 
       {/* Footer Menu */}
       <View style={styles.footerMenu}>
-        <TouchableOpacity style={styles.menuButton}>
-          <Text style={styles.menuText}>Schedule</Text>
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => router.push('/homescreen')}
+        >
+          <Text style={styles.menuIcon}>🏠</Text>
+          <Text style={styles.menuText}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButton}>
-          <Text style={styles.menuText}>+</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButton}>
-          <Text style={styles.menuText}>Profile</Text>
+        <TouchableOpacity
+          style={[styles.menuButton, styles.activeButton]}
+          onPress={() => router.push('/Profile')}
+        >
+          <View style={styles.activeIndicator}>
+            <Text style={[styles.menuIcon, { color: '#fff' }]}>👤</Text>
+            <Text style={[styles.menuText, { color: '#fff' }]}>Profile</Text>
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -218,7 +237,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    padding: 10,
+    padding: 8,
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -230,11 +249,28 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     alignItems: 'center',
+    flex: 1,
+    paddingVertical: 5,
+  },
+  menuIcon: {
+    fontSize: 20,
+    marginBottom: 2,
+    color: '#FF6347',
   },
   menuText: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#FF6347',
+  },
+  activeButton: {
+    backgroundColor: 'transparent',
+  },
+  activeIndicator: {
+    backgroundColor: '#FF6347',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    alignItems: 'center',
   },
   loaderContainer: {
     flex: 1,
@@ -262,7 +298,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   eyeIconContainer: {
-    marginLeft: 'auto', // Push the icon to the right
+    marginLeft: 'auto',
   },
   eyeIcon: {
     fontSize: 18,
