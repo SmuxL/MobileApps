@@ -29,7 +29,7 @@ const LoginScreen = () => {
 
       if (user) {
         Alert.alert('Success', 'Logged in successfully!');
-        router.push({ pathname: '/HomeScreen', params: { userId: user._id } });
+        router.push({ pathname: '/homescreen', params: { userId: user._id } });
       } else {
         Alert.alert('Error', 'Invalid email or password.');
       }
@@ -41,7 +41,6 @@ const LoginScreen = () => {
 
   return (
     <ImageBackground
-      source={require('../assets/background.jpg')}
       source={require('../assets/background.jpg')}
       style={styles.backgroundImage}
     >
