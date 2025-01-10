@@ -6,6 +6,7 @@ const config: ClientConfig = {
     dataset: 'production',
     useCdn: true, // set to `false` to bypass the edge cache
     apiVersion: '2025-01-08', // use current date (YYYY-MM-DD) to target the latest API version
+    token: 'skPrBFPJVULs1nD0317WSZuQmwFdsyU0jkJGfbWJcaKxjWVMXU8AfMQDmDBVBRE3CYdmlZkOpOduULSt9iJjNTPp1sqdMGLY7UAYDhOoRfD021DZbZK2u4e83SxezrhSiblWoMHSBsMPt8t4nTtsMznrD8PSy9vEOba6c76swPIwwwZuUoWj'
 }
 const client = createClient(config)
 const builder = imageUrlBuilder(client)
