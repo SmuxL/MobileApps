@@ -7,6 +7,8 @@ import {
   StyleSheet,
   Alert,
   ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import client from '~/sanity/sanity';
@@ -42,7 +44,7 @@ const SignUpScreen = () => {
 
       await client.create(Users);
       Alert.alert('Success', 'Account created successfully! You can now log in.');
-      router.push('/'); 
+      router.push('/');
     } catch (error) {
       console.error('Sign Up Error:', error);
       Alert.alert('Error', 'Failed to create an account. Please try again.');
@@ -50,48 +52,52 @@ const SignUpScreen = () => {
   };
 
   return (
-    <ImageBackground
-      source={require('../assets/background_signup.jpg')}
-      style={styles.background}
-      resizeMode="cover"
-    >
-      <View style={styles.overlay}>
-        <Text style={styles.title}>Sign Up</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ImageBackground
+        source={require('../assets/background_signup.jpg')}
+        style={styles.background}
+        resizeMode="cover"
+      >
+        <View style={styles.overlay}>
+          <Text style={styles.title}>Sign Up</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          placeholderTextColor="#fff"
-          value={name}
-          onChangeText={setName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#fff"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#fff"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            placeholderTextColor="#fff"
+            value={name}
+            onChangeText={setName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#fff"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#fff"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
 
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.push('/')}>
-          <Text style={styles.link}>Already have an account? Log In</Text>
-        </TouchableOpacity>
-      </View>
-    </ImageBackground>
+          <TouchableOpacity onPress={() => router.push('/')}>
+            <Text style={styles.link}>Already have an account? Log In</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    </KeyboardAvoidingView>
   );
 };
 
