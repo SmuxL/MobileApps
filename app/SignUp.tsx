@@ -18,7 +18,20 @@ const SignUpScreen = () => {
   const [password, setPassword] = useState('');
 
   const handleSignUp = async () => {
+    if (!name || !email || !password) {
+      Alert.alert('Error', 'All fields are required!');
+      return;
+    }
+
     try {
+      const existingUserQuery = `*[_type == "user" && email == $email][0]`;
+      const existingUser = await client.fetch(existingUserQuery, { email });
+
+      if (existingUser) {
+        Alert.alert('Error', 'Email is already in use.');
+        return;
+      }
+
       const newUser = {
         _type: 'user',
         name,
@@ -27,8 +40,8 @@ const SignUpScreen = () => {
       };
 
       await client.create(newUser);
-      Alert.alert('Success', 'Account created successfully!');
-      router.push('/');
+      Alert.alert('Success', 'Account created successfully! You can now log in.');
+      router.push('/'); 
     } catch (error) {
       console.error('Sign Up Error:', error);
       Alert.alert('Error', 'Failed to create an account. Please try again.');
@@ -37,7 +50,7 @@ const SignUpScreen = () => {
 
   return (
     <ImageBackground
-      source={require('../assets/background_signup.jpg')} // Voeg hier je achtergrondafbeelding toe
+      source={require('../assets/background_signup.jpg')}
       style={styles.background}
       resizeMode="cover"
     >
@@ -47,7 +60,7 @@ const SignUpScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="Name"
-          placeholderTextColor="#fff" // Placeholder in wit voor betere zichtbaarheid
+          placeholderTextColor="#fff"
           value={name}
           onChangeText={setName}
         />
@@ -74,7 +87,7 @@ const SignUpScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => router.push('/')}>
-          <Text style={styles.loginLink}>Already have an account? Log In</Text>
+          <Text style={styles.link}>Already have an account? Log In</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -92,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Donkere overlay voor contrast
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     width: '100%',
   },
   title: {
@@ -103,15 +116,15 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    borderColor: '#fff', // Randkleur aangepast naar wit
+    borderColor: '#fff',
     borderWidth: 1,
     borderRadius: 10,
     marginBottom: 10,
     paddingLeft: 15,
     fontSize: 16,
     width: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)', // Transparante achtergrond voor inputvelden
-    color: '#fff', // Ingevoerde tekst in wit
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    color: '#fff',
   },
   button: {
     backgroundColor: '#FF6347',
@@ -126,8 +139,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  loginLink: {
-    color: '#FF6347',
+  link: {
+    color: '#FFD700',
     textAlign: 'center',
     fontSize: 14,
     textDecorationLine: 'underline',
