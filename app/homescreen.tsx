@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import client from '~/sanity/sanity';
 
-// Typedefinitie voor Workout-items
 type Exercise = {
   _id: string;
   name: string;
@@ -38,7 +37,6 @@ const HomeScreen = () => {
 
   const router = useRouter();
 
-  // Dynamische datums en dagen genereren
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const currentDate = new Date();
   const dates = Array.from({ length: 7 }, (_, index) => {
@@ -126,29 +124,29 @@ const HomeScreen = () => {
         contentContainerStyle={{ paddingBottom: 80 }} // Extra ruimte onderaan voor footer
       />
 
-     {/* Footer Menu */}
-          <View style={styles.footerMenu}>
-            <TouchableOpacity
-              style={styles.menuButton}
-              onPress={() => router.push('/homescreen')}
-            >
-              <View style={styles.activeIndicator}>
-              <Text style={[styles.menuIcon, { color: '#fff' }]}>🏠</Text>
-              <Text style={[styles.menuText, { color: '#fff' }]}>Home</Text>
-              </View>
-
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.menuButton, styles.activeButton]}
-              onPress={() => router.push('/Profile')}>
-
-                <Text style={styles.menuIcon}>👤</Text>
-                <Text style={styles.menuText}>Profile</Text>
-            </TouchableOpacity>
+      {/* Footer Menu */}
+      <View style={styles.footerMenu}>
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => router.push('/homescreen')}
+        >
+          <View style={styles.activeIndicator}>
+            <Text style={[styles.menuIcon, { color: '#fff' }]}>🏠</Text>
+            <Text style={[styles.menuText, { color: '#fff' }]}>Home</Text>
           </View>
-        </View>
-      );
-    };
+
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.menuButton, styles.activeButton]}
+          onPress={() => router.push('/Profile')}>
+
+          <Text style={styles.menuIcon}>👤</Text>
+          <Text style={styles.menuText}>Profile</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -314,7 +312,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 3,
   },
-   menuButton: {
+  menuButton: {
     alignItems: 'center',
     flex: 1,
     paddingVertical: 5,
